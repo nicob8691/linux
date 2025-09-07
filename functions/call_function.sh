@@ -7,29 +7,29 @@ call_function () {
 	set -euo pipefail
 
 	### Initialise variables ----------------------------------------------
-	local SCRIPT=$1
+	local SCRIPT="$1"
 	local SCRIPT_NAME=${SCRIPT##*/}
 	local CALLER_SCRIPT=${BASH_SOURCE[1]}
 	local LOG_DIR="${CALLER_SCRIPT%/*}/.${CALLER_SCRIPT##*/}.log"
 	local DATE="$(date +%Y.%m.%d-%H:%M:%S)"
 	local LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$DATE.log"
+	local MARKER_FILE="$LOG_DIR/$SCRIPT_NAME.done"
 
 	### Make sure .log dir exists or create -------------------------------
-	mkdir -p $LOG_DIR
+	mkdir -p "$LOG_DIR"
 
-	### Log all script commands & outputs ---------------------------------
-	exec > >(tee -ia $LOG_FILE) 2>&1
-
-	### Test if script have already been ran (log exists)
-	if ! compgen -G "$LOG_DIR/$SCRIPT_NAME-*.log" > /dev/null; then
+	### Test if script have already been succesfully ran
+	if [ ! -f "$MARKER_FILE" ]; then
 
 		### Print script header -----------------------------------------------
 		TEXT="----- Script $SCRIPT_NAME run by $USER on $DATE -----"
 		printf "\n\033[44m$TEXT\033[0m\n\n"
 
 		### Run script --------------------------------------------------------
-		bash -ex $1
-
+		(
+		bash -ex "$1" && touch "$MARKER_FILE"
+		) 2>&1 | tee -ia "$LOG_FILE"
+		
 		### Confirm script ran well -------------------------------------------
 		TEXT="--- script $SCRIPT_NAME ended well ---"
 		printf "\n\033[42m$TEXT\033[0m\n\n"
@@ -40,7 +40,7 @@ call_function () {
 	fi
 
 	#--- Ensure group ownership and mode
-	chown -R $USER:gitusers $LOG_DIR
-	chmod -R 770 $LOG_DIR
+	chown -R "$USER:gitusers" "$LOG_DIR"
+	chmod -R 770 "$LOG_DIR"
 
  }

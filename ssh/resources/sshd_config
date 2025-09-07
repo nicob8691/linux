@@ -1,0 +1,37 @@
+# This is the sshd server system-wide configuration file.
+# See sshd_config(5) for more information.
+
+Protocol 2
+Banner /etc/ssh/sshd_banner
+
+#--- Ports & Networking
+Port TCP_PORT
+AddressFamily inet
+ListenAddress 127.0.0.1
+ListenAddress IPv4_ADDRESS
+
+#--- Authentication
+PasswordAuthentication no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+#--- Users 
+PermitRootLogin no
+AllowUsers remote
+
+#--- Security hardening
+MaxAuthTries 3
+MaxSessions 3
+MaxStartups 2
+
+#---Forwarding
+AllowAgentForwarding no
+AllowTcpForwarding yes
+X11Forwarding yes
+
+#--- Others
+IgnoreRhosts yes
+ClientAliveInterval 600
+
+#--- Logging
+LogLevel VERBOSE
