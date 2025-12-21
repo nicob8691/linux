@@ -30,7 +30,7 @@ call_function () {
 
 		### Run script --------------------------------------------------------
 		(
-		bash -ex "$1" && touch "$MARKER_FILE"
+		bash -ex "$1" "${@:2}" && touch "$MARKER_FILE"
 		) 2>&1 | tee -ia "$LOG_FILE"
 
 		### Confirm script ran well -------------------------------------------
