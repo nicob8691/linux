@@ -14,5 +14,4 @@ IPv4_ADDRESS=$2
 
 	#--- Change default port and address
 	sed -i "s/TCP_PORT/$SSH_PORT/g" /etc/ssh/sshd_config
-	sed -i "s/IPv4_ADDRESS/$ADDRESS/g" /etc/ssh/sshd_config 
-
+	sed -i "s/IPv4_ADDRESS/$ADDRESS/g" /etc/ssh/sshd_config
