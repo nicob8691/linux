@@ -7,14 +7,17 @@ call_function () {
 	set -euo pipefail
 
 	### Initialise variables ----------------------------------------------
-	local SCRIPT="$1"
-	local SCRIPT_NAME=${SCRIPT##*/}
-	local CALLER_SCRIPT=${BASH_SOURCE[1]}
-	local LOG_DIR="${CALLER_SCRIPT%/*}/.${CALLER_SCRIPT##*/}.log"
+	local SCRIPT_NAME=${1##*/}
+	#------------------------------------------------
+	local CALLER_SCRIPT="${BASH_SOURCE[1]}"
+	local CALLER_DIR="${CALLER_SCRIPT%/*}"
+	local CALLER_BASE="${CALLER_SCRIPT##*/}"
+	local CALLER_NAME="${CALLER_BASE%.*}"
+	#------------------------------------------------
+	local LOG_DIR="$CALLER_DIR/.logs/${CALLER_NAME}"
 	local DATE="$(date +%Y.%m.%d-%H:%M:%S)"
 	local LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$DATE.log"
 	local MARKER_FILE="$LOG_DIR/$SCRIPT_NAME.done"
-
 	### Make sure .log dir exists or create -------------------------------
 	mkdir -p "$LOG_DIR"
 
@@ -29,7 +32,7 @@ call_function () {
 		(
 		bash -ex "$1" && touch "$MARKER_FILE"
 		) 2>&1 | tee -ia "$LOG_FILE"
-		
+
 		### Confirm script ran well -------------------------------------------
 		TEXT="--- script $SCRIPT_NAME ended well ---"
 		printf "\n\033[42m$TEXT\033[0m\n\n"
