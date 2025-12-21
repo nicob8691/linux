@@ -14,7 +14,7 @@ call_function () {
 	local CALLER_BASE="${CALLER_SCRIPT##*/}"
 	local CALLER_NAME="${CALLER_BASE%.*}"
 	#------------------------------------------------
-	local LOG_DIR="$CALLER_DIR/.logs/${CALLER_NAME}"
+	local LOG_DIR=".logs/${CALLER_NAME}"
 	local DATE="$(date +%Y.%m.%d-%H:%M:%S)"
 	local LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$DATE.log"
 	local MARKER_FILE="$LOG_DIR/$SCRIPT_NAME.done"
@@ -30,7 +30,7 @@ call_function () {
 
 		### Run script --------------------------------------------------------
 		(
-		bash -ex "$1" && touch "$MARKER_FILE"
+		bash -ex "$1" "${@:2}" && touch "$MARKER_FILE"
 		) 2>&1 | tee -ia "$LOG_FILE"
 
 		### Confirm script ran well -------------------------------------------
