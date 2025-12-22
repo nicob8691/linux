@@ -13,11 +13,5 @@ ADDRESS=$2
 	cp /home/git/linux/ssh/resources/sshd_banner /etc/ssh/sshd_banner
 
 	#--- Change default port and address
-<<<<<<< HEAD
 	sed -i "s/TCP_PORT/$PORT/g" /etc/ssh/sshd_config
-	sed -i "s/IPv4_ADDRESS/$ADDRESS/g" /etc/ssh/sshd_config 
-
-=======
-	sed -i "s/TCP_PORT/$SSH_PORT/g" /etc/ssh/sshd_config
 	sed -i "s/IPv4_ADDRESS/$ADDRESS/g" /etc/ssh/sshd_config
->>>>>>> 65c1d1df899bb0913e98d86914c2bedf71beecb6
