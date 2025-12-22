@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TCP_PORT=$1
-IPv4_ADDRESS=$2
+PORT=$1
+ADDRESS=$2
 
 #--- Copy config file ---------------------------------------------------------
 
@@ -13,6 +13,6 @@ IPv4_ADDRESS=$2
 	cp /home/git/linux/ssh/resources/sshd_banner /etc/ssh/sshd_banner
 
 	#--- Change default port and address
-	sed -i "s/TCP_PORT/$SSH_PORT/g" /etc/ssh/sshd_config
+	sed -i "s/TCP_PORT/$PORT/g" /etc/ssh/sshd_config
 	sed -i "s/IPv4_ADDRESS/$ADDRESS/g" /etc/ssh/sshd_config 
 
