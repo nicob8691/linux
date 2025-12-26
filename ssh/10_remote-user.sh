@@ -8,7 +8,7 @@
 	fi
 	
 	#--- Add user remote
-	useradd -m -u 1001 -G wheel -s /bin/bash remote
+	useradd -m -u 1001 -G wheel,gitusers -s /bin/bash remote
 	
 	#--- Configure user password
 	passwd remote
